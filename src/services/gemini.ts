@@ -5,7 +5,18 @@ export interface Chapter {
   startPage: number;
 }
 
-export async function detectChapters(pdfBase64: string, apiKey: string, model: string = "gemini-3.1-flash-lite-preview"): Promise<Chapter[]> {
+const models: string[] = [
+	"gemini-3.1-flash-lite",
+	"gemini-3.1-flash-lite-preview",
+];
+
+model_idx =
+1
+; // TODO 0 from 25 May
+
+const cur_model: string = models[model_idx]; // models[0] from 25 May
+
+export async function detectChapters(pdfBase64: string, apiKey: string, model: string = cur_model): Promise<Chapter[]> {
   const ai = new GoogleGenAI({ apiKey });
   const response = await ai.models.generateContent({
     model: model,
@@ -48,7 +59,7 @@ export async function detectChapters(pdfBase64: string, apiKey: string, model: s
   }
 }
 
-export async function generateDetailedToc(pdfBase64: string, apiKey: string, model: string = "gemini-3.1-flash-lite-preview"): Promise<string> {
+export async function generateDetailedToc(pdfBase64: string, apiKey: string, model: string = cur_model): Promise<string> {
   const ai = new GoogleGenAI({ apiKey });
   const response = await ai.models.generateContent({
     model: model,
@@ -72,7 +83,7 @@ export async function generateDetailedToc(pdfBase64: string, apiKey: string, mod
   return response.text || "No TOC generated.";
 }
 
-export async function extractTextForOcr(pdfBase64: string, apiKey: string, model: string = "gemini-3.1-flash-lite-preview"): Promise<string> {
+export async function extractTextForOcr(pdfBase64: string, apiKey: string, model: string = cu_model): Promise<string> {
   const ai = new GoogleGenAI({ apiKey });
   const response = await ai.models.generateContent({
     model: model,
