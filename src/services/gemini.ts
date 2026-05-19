@@ -16,7 +16,7 @@ const models: string[] = [
 	"gemini-3.1-flash-lite-preview",
 ];
 
-model_idx = getModelIdx();
+model_idx: number = getModelIdx();
 
 const currentModel: string = models[model_idx];
 
