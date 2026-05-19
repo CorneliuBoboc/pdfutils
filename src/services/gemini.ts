@@ -5,18 +5,22 @@ export interface Chapter {
   startPage: number;
 }
 
+const getModelIdx = (): number => {
+  const switchDate = new Date(2026, 4, 25, 0, 0, 0); // May 25, 12AM (month is 0-indexed)
+  return new Date() >= switchDate ? 0 : 1;
+};
+
+// Usage
 const models: string[] = [
 	"gemini-3.1-flash-lite",
 	"gemini-3.1-flash-lite-preview",
 ];
 
-model_idx =
-1
-; // TODO 0 from 25 May
+model_idx = getModelIdx();
 
-const cur_model: string = models[model_idx]; // models[0] from 25 May
+const currentModel: string = models[model_idx];
 
-export async function detectChapters(pdfBase64: string, apiKey: string, model: string = cur_model): Promise<Chapter[]> {
+export async function detectChapters(pdfBase64: string, apiKey: string, model: string = currentModel): Promise<Chapter[]> {
   const ai = new GoogleGenAI({ apiKey });
   const response = await ai.models.generateContent({
     model: model,
@@ -59,7 +63,7 @@ export async function detectChapters(pdfBase64: string, apiKey: string, model: s
   }
 }
 
-export async function generateDetailedToc(pdfBase64: string, apiKey: string, model: string = cur_model): Promise<string> {
+export async function generateDetailedToc(pdfBase64: string, apiKey: string, model: string = currentModel): Promise<string> {
   const ai = new GoogleGenAI({ apiKey });
   const response = await ai.models.generateContent({
     model: model,
